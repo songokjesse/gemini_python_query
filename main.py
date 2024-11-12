@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import google.generativeai as genai
+import pandas as pd
 
 load_dotenv()  # Load environment variables from .env
 
@@ -13,14 +14,27 @@ genai.configure(api_key=gemini_api_key)
 model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
 # List of questions
-questions = [
-    # "What is the capital of France?",
-    # "How many planets are in the solar system?",
-    # "Who painted the Mona Lisa?",
-    "A patient came to facility with shortness of breath, chest pains, sweating at night.Was in contact with someone who had TB and the guy had cough."
-]
+def get_questions_from_excel(filename):
+    """Reads questions from column C, starting from row 2, of an Excel file using pandas.
+
+    Args:
+        filename: The name of the Excel file.
+
+    Returns:
+        A list of questions.
+    """
+
+    df = pd.read_excel(filename)
+    questions = df['Describe the Situation (What was going on), Background (clinical history/context), Assessment (what was observed)'][1:].tolist()  # Select column C, starting from row 1 (index 0)
+
 
 # Iterate through the questions and print responses
-for question in questions:
-    response = model.generate_content(question)
-    print(response.text)
+    for question in questions:
+        response = model.generate_content(question)
+        print(response.text)
+        # TODO
+        #  write to a column in the execl file
+
+
+if __name__ == "__main__":
+    get_questions_from_excel("questions.xlsx")
