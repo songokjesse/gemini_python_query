@@ -23,7 +23,7 @@ Features
 ## Installation
 
     1. Clone the repository:
-        git clone https://github.com/yourusername/GeminiQ.git 
+        git clone https://github.com/songokjesse/gemini_python_query 
         cd GeminiQ
     2. Create a virtual environment and activate it:
         python3 -m venv venv source venv/bin/activate # On Windows use `venv\Scripts\activate`
